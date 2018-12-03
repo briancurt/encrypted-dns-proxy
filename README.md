@@ -4,7 +4,7 @@ Simple proxy that captures plain text UDP DNS requests from the host, redirects 
 
 
 
-### Details
+### Implementation
 
 Since 53/UDP is the default port/protocol for DNS queries as per [RFC-1035](https://www.ietf.org/rfc/rfc1035.txt) and [RFC-1536](https://tools.ietf.org/html/rfc1536), the application binds a datagram type socket to the host. This port could be changed to a different one if desired (see [Usage](https://github.com/briancurt/encrypted-dns-proxy#usage)). Upon receiving a query the program starts a new thread to process it. It then begins to wrap a new TCP socket using SSL and verify the certificate over port 853 as described on [RFC-7858](https://tools.ietf.org/html/rfc7858). The full message is formatted according to [RFC-1035](https://tools.ietf.org/html/rfc1035) as first bit 0 (QUERY) + lenght + query and sent to the server over the encrypted connection. When it gets the reply, it checks the answer for errors specifically on the RCODE bits as detailed on [RFC-6895-2.3](https://tools.ietf.org/html/rfc6895#section-2.3). If the query was successful, forwards back the result to the client minus the first 2 bits. The application can run both as a standalone script or a Docker container.
 
@@ -14,12 +14,12 @@ Since 53/UDP is the default port/protocol for DNS queries as per [RFC-1035](http
 
 The program uses built-in Python 3.6.5 libraries and can be used directly from a terminal if desired. Just clone the repo and you're all set:
 
-```bash
+```
 $ ./proxy.py --help
 
 usage: proxy.py [-h] [-p PORT] [-a ADDRESS] [-d DNS] [-c CA]
 
-DNS to DNS-over-TLS proxy.
+Transparent DNS to DNS-over-TLS proxy.
 
 optional arguments:
   -h, --help            show this help message and exit
