@@ -10,6 +10,7 @@ import threading
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def send_message(dns, query, ca_path):
 
     server = (dns, 853)
@@ -53,10 +54,38 @@ def thread(data, address, socket, dns, ca_path):
 def main():
 
     parser = ArgumentParser(description="Semi transparent DNS to DNS-over-TLS proxy.")
-    parser.add_argument('-p', '--port', help="Port of the listening proxy [default: 53]", type=int, default=53, required=False)
-    parser.add_argument('-a', '--address', help="Address of the proxy network interface to use [default: 0.0.0.0]", type=str, default='0.0.0.0', required=False)
-    parser.add_argument('-d', '--dns', help="Domain name server with TLS support [default: 1.1.1.1]", type=str, default='1.1.1.1', required=False)
-    parser.add_argument('-c', '--ca', help="Path to the root and intermediate certificates file [default: /etc/ssl/cert.pem]", type=str, default='/etc/ssl/cert.pem', required=False)
+    parser.add_argument(
+        "-p",
+        "--port",
+        help="Port of the listening proxy [default: 53]",
+        type=int,
+        default=53,
+        required=False,
+    )
+    parser.add_argument(
+        "-a",
+        "--address",
+        help="Address of the proxy network interface to use [default: 0.0.0.0]",
+        type=str,
+        default="0.0.0.0",
+        required=False,
+    )
+    parser.add_argument(
+        "-d",
+        "--dns",
+        help="Domain name server with TLS support [default: 1.1.1.1]",
+        type=str,
+        default="1.1.1.1",
+        required=False,
+    )
+    parser.add_argument(
+        "-c",
+        "--ca",
+        help="Path to the root and intermediate certificates file [default: /etc/ssl/cert.pem]",
+        type=str,
+        default="/etc/ssl/cert.pem",
+        required=False,
+    )
     args = parser.parse_args()
     port = args.port
     host = args.address
@@ -67,12 +96,14 @@ def main():
         sock.bind((host, port))
         while True:
             data, address = sock.recvfrom(4096)
-            threading.Thread(target=thread, args=(data, address, sock, dns, ca_path)).start()
+            threading.Thread(
+                target=thread, args=(data, address, sock, dns, ca_path)
+            ).start()
     except Exception as e:
         logger.error(e)
     finally:
         sock.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
