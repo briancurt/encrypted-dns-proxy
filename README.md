@@ -1,6 +1,6 @@
 # Transparent DNS to DNS-over-TLS proxy
 
-Simple proxy that captures plain text UDP DNS requests from the host, redirects the query over an ecrypted channel to a DNS server that supports TLS (for example, [Cloudflare's 1.1.1.1](https://1.1.1.1/)), and replies back to the client with the answer. I made this project only for learning purposes, any PR to correct something or improve it will be very much appreciated.
+Simple proxy that captures plain text UDP DNS requests from the host, redirects the query over an ecrypted channel to a DNS server that supports TLS (for example, [Cloudflare's 1.1.1.1](https://1.1.1.1/) or [Quad9's 9.9.9.9](https://www.quad9.net/)), and replies back to the client with the answer. I made this project only for learning purposes, any PR to correct something or improve it will be very much appreciated.
 
 
 
@@ -36,7 +36,7 @@ It also works as a Docker container. Simply run:
 
 `docker run --rm -p 53:53/tcp -p 53:53/udp briancurt/encrypted-dns-proxy`
 
-If instead of using the default (and recommended) port 53 you want to have the proxy on a different port, and thus use the `-p` flag, don't forget to expose the corresponding ports at container run time. The same applies if you want to use a different CA bundle through the `-c `  flag, please mount the host disk with the right file(s). You can use [Cloudflare's 1.1.1.1](https://developers.cloudflare.com/1.1.1.1/dns-over-tls/) (default) or any other DNS provider that supports TLS by passing the `-d` flag.
+If instead of using the default (and recommended) port 53 you want to have the proxy on a different port, and thus use the `-p` flag, don't forget to expose the corresponding ports at container run time. The same applies if you want to use a different CA bundle through the `-c `  flag, please mount the host disk with the right file(s). You can use the default DNS, or use any other server that supports TLS by passing the `-d` flag.
 
 
 
@@ -74,4 +74,3 @@ github.com.		45	IN	A	192.30.253.112
 ;; WHEN: Thu Oct 25 16:39:31 -03 2018
 ;; MSG SIZE  rcvd: 468
 ```
-
