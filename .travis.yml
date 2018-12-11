@@ -3,5 +3,10 @@ python:
   - "3.5"
   - "3.6"
   - "3.7-dev"
+before_install:
+  - sudo apt-get update -y
+  - sudo apt-get install -y openssl wget
+  - sudo wget https://curl.haxx.se/ca/cacert.pem -O /etc/ssl/certs/cacert.pem
+  - sudo update-ca-certificates -f
 script:
   - ./test.sh
